@@ -34,6 +34,11 @@ class Environment
     protected $configDir;
 
     /**
+     * @var boolean should program fail gracefully?
+     */
+    protected $isGraceful = false;
+
+    /**
      * @var string path to yii.php
      */
     public $yiiPath;
@@ -126,7 +131,28 @@ class Environment
 
         $this->mode = $mode;
     }
-    
+
+    /**
+     * Set environment variable name.
+     * @param string $envVar
+     */
+    public function setEnvVar($envVar)
+    {
+        $this->envVar = $envVar;
+    }
+
+    /**
+     * Determine the behavior when envVar is missing.
+     *
+     * if set to false, an exception will be throwed, else the program
+     * will pick the PRODUCTION MOD
+     * @param boolean $isGraceful
+     */
+    public function failGracefully($isGraceful)
+    {
+        $this->isGraceful = (bool) $isGraceful;
+    }
+
     /**
      * Determine current environment mode depending on environment variable.
      * Also checks if there is a mode file that might override this environment.
@@ -141,8 +167,10 @@ class Environment
         } else {
             // Else, return mode based on environment var
             $mode = getenv($this->envVar);
-            if ($mode === false) {
+            if ($mode === false && !$this->isGraceful) {
                 throw new \Exception('"Environment mode cannot be determined, see class for instructions.');
+            } else if ($mode === false && $this->isGraceful) {
+                $mode = 'PRODUCTION';
             }
         }
         return $mode;
