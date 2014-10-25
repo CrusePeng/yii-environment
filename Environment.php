@@ -21,8 +21,8 @@ class Environment
     /**
      * @var string name of env var to check
      */
-    protected $envVar = 'YII_ENVIRONMENT';
-    
+    protected static $envVar = 'YII_ENVIRONMENT';
+
     /**
      * @var string selected environment mode
      */
@@ -138,19 +138,7 @@ class Environment
      */
     public function setEnvVar($envVar)
     {
-        $this->envVar = $envVar;
-    }
-
-    /**
-     * Determine the behavior when envVar is missing.
-     *
-     * if set to false, an exception will be throwed, else the program
-     * will pick the PRODUCTION MOD
-     * @param boolean $isGraceful
-     */
-    public function failGracefully($isGraceful)
-    {
-        $this->isGraceful = (bool) $isGraceful;
+        self::$envVar = $envVar;
     }
 
     /**
@@ -166,11 +154,9 @@ class Environment
             $mode = trim(file_get_contents($this->getModeFilePath()));
         } else {
             // Else, return mode based on environment var
-            $mode = getenv($this->envVar);
-            if ($mode === false && !$this->isGraceful) {
+            $mode = getenv(self::$envVar);
+            if ($mode === false) {
                 throw new \Exception('"Environment mode cannot be determined, see class for instructions.');
-            } else if ($mode === false && $this->isGraceful) {
-                $mode = 'PRODUCTION';
             }
         }
         return $mode;
