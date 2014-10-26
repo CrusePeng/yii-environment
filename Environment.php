@@ -34,11 +34,6 @@ class Environment
     protected $configDir;
 
     /**
-     * @var boolean should program fail gracefully?
-     */
-    protected $isGraceful = false;
-
-    /**
      * @var string path to yii.php
      */
     public $yiiPath;
