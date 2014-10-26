@@ -1,5 +1,5 @@
 {
-    "name": "pengchi/yii-environment",
+    "name": "marcovtwout/yii-environment",
     "description": "Environment class for Yii, used to set configuration for console and web apps depending on the server environment.",
     "keywords": ["yii", "environment"],
     "homepage": "https://github.com/marcovtwout/yii-environment",

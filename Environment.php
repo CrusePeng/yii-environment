@@ -136,7 +136,7 @@ class Environment
      * Set environment variable name.
      * @param string $envVar
      */
-    public function setEnvVar($envVar)
+    public static function setEnvVar($envVar)
     {
         self::$envVar = $envVar;
     }
